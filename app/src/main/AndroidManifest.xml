@@ -1,25 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+package com.studios.forsaken2d
 
-    <application
-        android:allowBackup="false"
-        android:label="Forsaken: Redux"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        android:usesCleartextTraffic="true"
-        android:hardwareAccelerated="true">
-        
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:screenOrientation="sensorLandscape"
-            android:configChanges="orientation|screenSize|keyboardHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
-</manifest>
+import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        try {
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or View.SYSTEM_UI_FLAG_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            )
+            setContentView(GameView(this))
+        } catch (e: Exception) {
+            // Nếu có lỗi, hiển thị màn hình đỏ để biết lỗi gì
+            val tv = android.widget.TextView(this)
+            tv.text = "LỖI KHỞI TẠO:\n${e.message}"
+            tv.setTextColor(android.graphics.Color.RED)
+            tv.textSize = 20f
+            tv.setPadding(50, 50, 50, 50)
+            setContentView(tv)
+        }
+    }
+}
